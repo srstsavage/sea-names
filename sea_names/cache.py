@@ -1,8 +1,9 @@
 """Module to download available sea name polygons to local system."""
-import tarfile
 import hashlib
 import shutil
 import sys
+import tarfile
+
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -10,6 +11,7 @@ import appdirs
 import requests
 
 from sea_names.log import logger, setup_logging
+
 
 URL = "https://files.axds.co/sea_names.tar.gz"
 FILE_HASH = "723b4d16b02cb5c555ffb1f9d3324edecd2b9dadd55af17e1549232006054cd4"
@@ -20,8 +22,8 @@ CACHE_BOUNDS_FILE = CACHE_PATH / "sea_names/sea_names.box"
 
 def extract_region_bounds():
     """Extracts the tarball of sea-name polygon info."""
-    with tarfile.open(CACHE_FILE, mode='r:gz') as tf:
-        tf.extract(member='sea_names/sea_names.box', path=CACHE_PATH)
+    with tarfile.open(CACHE_FILE, mode="r:gz") as tf:
+        tf.extract(member="sea_names/sea_names.box", path=CACHE_PATH)
 
 
 def download_sea_names():
