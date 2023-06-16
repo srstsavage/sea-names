@@ -1,0 +1,5 @@
+name: sea-names
+channels:
+  - conda-forge
+dependencies:
+  - python
