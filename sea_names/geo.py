@@ -1,11 +1,14 @@
 """Determine the NCEI Sea Name from a point."""
-from functools import lru_cache
-from sea_names.cache import CACHE_FILE, CACHE_BOUNDS_FILE, download_sea_names
 import re
 import tarfile
+
+from functools import lru_cache
 from typing import Dict, List, Optional, Tuple
-from shapely.geometry.polygon import Polygon
+
 from shapely import Point
+from shapely.geometry.polygon import Polygon
+
+from sea_names.cache import CACHE_BOUNDS_FILE, CACHE_FILE, download_sea_names
 
 
 @lru_cache
@@ -16,16 +19,16 @@ def get_sea_bounds() -> Dict[str, Polygon]:
 
     name: Optional[str] = None
 
-    with open(CACHE_BOUNDS_FILE, 'r') as f:
+    with open(CACHE_BOUNDS_FILE, "r") as f:
         points: List[Tuple[float, float]] = []
         polygons: Dict[str, Polygon] = {}
 
         for line_no, line in enumerate(f.readlines()):
             line = line.strip()  # strip newline
-            line = line.replace('  ', ' ')
+            line = line.replace("  ", " ")
             if not line:
                 continue
-            if line.startswith('> '):
+            if line.startswith("> "):
                 if name and line_no > 0:
                     polygon = Polygon(points)
                     polygons[name] = polygon
@@ -34,7 +37,7 @@ def get_sea_bounds() -> Dict[str, Polygon]:
                 points = []
             else:
                 # Point details
-                x, y = [float(i) for i in line.split(' ')]
+                x, y = [float(i) for i in line.split(" ")]
                 points.append((x, y))
         if name:
             polygon = Polygon(points)
@@ -56,16 +59,16 @@ def get_region_polygons(region_name: str) -> List[Polygon]:
         if f is None:
             raise ValueError("Failed to extract region, (unknown error)")
         with f:
-            buf = f.read().decode('utf-8')
-            lines = buf.split('\n')
+            buf = f.read().decode("utf-8")
+            lines = buf.split("\n")
             points: List[Tuple[float, float]] = []
 
             for line_no, line in enumerate(lines):
                 line = line.strip()  # strip newline
-                line = line.replace('  ', ' ')
+                line = line.replace("  ", " ")
                 if not line:
                     continue
-                if line.startswith('>'):
+                if line.startswith(">"):
                     if line_no > 0:
                         polygon = Polygon(points)
                         polygons.append(polygon)
@@ -73,7 +76,7 @@ def get_region_polygons(region_name: str) -> List[Polygon]:
                     points = []
                 else:
                     # Point details
-                    x, y = [float(i) for i in line.split(' ')]
+                    x, y = [float(i) for i in line.split(" ")]
                     points.append((x, y))
             polygon = Polygon(points)
             polygons.append(polygon)
@@ -96,8 +99,8 @@ def get_sea_name(*args) -> Optional[str]:
         if bounds.contains(point):
             for polygon in get_region_polygons(name):
                 if polygon.contains(point):
-                    tokens = name.split(' ')
-                    if re.match(r'[0-9]+[a-z]?', tokens[-1]):
-                        name = ' '.join(tokens[:-1])
+                    tokens = name.split(" ")
+                    if re.match(r"[0-9]+[a-z]?", tokens[-1]):
+                        name = " ".join(tokens[:-1])
                     return name
     return None
