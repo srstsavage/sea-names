@@ -5,7 +5,7 @@ import tarfile
 from functools import lru_cache
 from typing import Dict, List, Optional, Tuple
 
-from shapely import Point
+from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 from sea_names.cache import CACHE_BOUNDS_FILE, CACHE_FILE, download_sea_names
