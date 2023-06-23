@@ -5,7 +5,7 @@
 sea-names
 ===============================
 
-Python Boilerplate contains all the boilerplate you need to create a Python package.
+Determine the sea-name of any arbitrary point or shapely geometry.
 
 Copyright 2023 Axiom Data Science, LLC
 
