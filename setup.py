@@ -38,7 +38,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Python Boilerplate contains all the boilerplate you need to create a Python package.",
+    description="Determine the sea-name of any arbitrary point or shapely geometry.",
     entry_points={
         'console_scripts': [
             'sea-names=sea_names.cli:main',
@@ -54,6 +54,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='http://git.axiom/axiom/sea-names',
-    version='0.1.1',
+    version='0.1.2',
     zip_safe=False,
 )
