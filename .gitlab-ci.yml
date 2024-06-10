@@ -35,7 +35,7 @@ lint:
   image: $LINT_IMAGE
   stage: test
   script:
-    - git config --global --add safe.directory /builds/axiom/sea-names
+    - git config --global --add safe.directory $PWD
     - pre-commit run --show-diff-on-failure --color=always --all-files
 
 test:
