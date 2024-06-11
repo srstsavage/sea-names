@@ -68,6 +68,9 @@ def get_region_polygons(region_name: str) -> List[Polygon]:
                 line = line.replace("  ", " ")
                 if not line:
                     continue
+                # Ignore comment lines
+                if line.startswith("#"):
+                    continue
                 if line.startswith(">"):
                     if line_no > 0:
                         polygon = Polygon(points)
