@@ -10,3 +10,4 @@ dependencies:
   - types-setuptools
   - mypy
   - black
+  - bump2version
