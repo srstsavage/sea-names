@@ -6,3 +6,4 @@ dependencies:
   - shapely
   - requests
   - appdirs
+  - numpy

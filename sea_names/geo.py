@@ -1,14 +1,18 @@
 """Determine the NCEI Sea Name from a point."""
+
 import re
 import tarfile
 
 from functools import lru_cache
 from typing import Dict, List, Optional, Tuple
 
+import numpy as np
+
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 from sea_names.cache import CACHE_BOUNDS_FILE, CACHE_FILE, download_sea_names
+from sea_names.processing import evaluate_polygon_brute_force, evaluate_possible_regions
 
 
 @lru_cache
@@ -102,8 +106,33 @@ def get_sea_name(*args) -> Optional[str]:
         if bounds.contains(point):
             for polygon in get_region_polygons(name):
                 if polygon.contains(point):
-                    tokens = name.split(" ")
-                    if re.match(r"[0-9]+[a-z]?", tokens[-1]):
-                        name = " ".join(tokens[:-1])
-                    return name
+                    return clean_name(name)
     return None
+
+
+def clean_name(name: str) -> str:
+    """Return the sea name without the extra suffix."""
+    tokens = name.split(" ")
+    if re.match(r"[0-9]+[a-z]?", tokens[-1]):
+        name = " ".join(tokens[:-1])
+    return name
+
+
+def get_sea_names_for_trajectory(
+    lon: np.ndarray, lat: np.ndarray, chunk_size: int = 256
+) -> List[str]:
+    """Return the list of sea names for the given trajectory."""
+    valid_regions = []
+    sea_bounds = get_sea_bounds()
+
+    for i in range(0, len(lon), chunk_size):
+        segment_lon = lon[i : (i + chunk_size)]
+        segment_lat = lat[i : (i + chunk_size)]
+        possible_regions = evaluate_possible_regions(
+            sea_bounds, segment_lon, segment_lat
+        )
+        valid_regions.extend(
+            evaluate_polygon_brute_force(possible_regions, segment_lon, segment_lat)
+        )
+
+    return sorted([clean_name(i) for i in set(valid_regions)])
