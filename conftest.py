@@ -18,6 +18,7 @@ def pytest_addoption(parser):
 def pytest_configure(config):
     """Adds marker for slow."""
     config.addinivalue_line("markers", "integration: mark test as an integration test")
+    config.addinivalue_line("markers", "slow: mark test as potentially slow")
 
 
 def pytest_collection_modifyitems(config, items):

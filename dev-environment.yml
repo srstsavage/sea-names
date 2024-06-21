@@ -9,3 +9,4 @@ dependencies:
   - pre-commit
   - types-setuptools
   - mypy
+  - black

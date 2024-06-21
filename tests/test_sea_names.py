@@ -1,8 +1,11 @@
 #!/usr/bin/env pytest
 """Test case for sea names."""
+import pytest
+
 import sea_names
 
 
+@pytest.mark.slow
 def test_sea_name():
     """Test that we can determine the sea name from these points."""
 
