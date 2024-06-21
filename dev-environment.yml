@@ -11,3 +11,7 @@ dependencies:
   - mypy
   - black
   - bump2version
+  - pip
+  - pip:
+    - build
+    - twine

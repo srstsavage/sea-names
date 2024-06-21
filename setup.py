@@ -53,7 +53,7 @@ setup(
     packages=find_packages(include=['sea_names', 'sea_names.*']),
     test_suite='tests',
     tests_require=test_requirements,
-    url='http://git.axiom/axiom/sea-names',
+    url='http://github.com/axiom-data-science/sea-names/',
     version='0.2.0',
     zip_safe=False,
 )
